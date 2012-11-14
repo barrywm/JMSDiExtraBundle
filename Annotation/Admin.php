@@ -46,6 +46,9 @@ class Admin implements MetadataProcessorInterface
 
     /** @var string */
     public $translationDomain;
+    
+    /** @var array */
+    public $children;
 
     public function processMetadata(ClassMetadata $metadata)
     {
@@ -70,6 +73,13 @@ class Admin implements MetadataProcessorInterface
         if ($this->translationDomain) {
             $metadata->methodCalls[] = array('setTranslationDomain', array($this->translationDomain));
         }
+        
+        if (is_array($this->children)) {
+            foreach ($this->children as $child) {
+                $metadata->methodCalls[] = array('addChild', array($child));
+            }
+        }
+        
     }
 
     private function generateAdminProperties($name)
